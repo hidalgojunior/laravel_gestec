@@ -156,6 +156,7 @@ class UserController extends Controller
         // Regras específicas por papel
         switch ($role) {
             case 'ministrador':
+            case 'palestrante':
                 $rules['whatsapp'] = 'required|string|max:20';
                 $rules['additional_contacts'] = 'nullable|array';
                 break;

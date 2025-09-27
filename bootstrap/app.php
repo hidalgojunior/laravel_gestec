@@ -13,12 +13,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'password.change.check' => \App\Http\Middleware\CheckPasswordChange::class,
-            'maintenance.check' => \App\Http\Middleware\CheckMaintenanceMode::class,
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
 
         $middleware->web(append: [
             \App\Http\Middleware\CheckPasswordChange::class,
-            \App\Http\Middleware\CheckMaintenanceMode::class,
+            \App\Http\Middleware\ThemeMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

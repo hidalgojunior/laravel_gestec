@@ -25,8 +25,13 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="event_date" class="block text-gray-700 text-sm font-bold mb-2">Data do Evento:</label>
-                    <input type="datetime-local" id="event_date" name="event_date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                    <label for="start_date" class="block text-gray-700 text-sm font-bold mb-2">Data e Hora de Início:</label>
+                    <input type="datetime-local" id="start_date" name="start_date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="end_date" class="block text-gray-700 text-sm font-bold mb-2">Data e Hora de Fim:</label>
+                    <input type="datetime-local" id="end_date" name="end_date" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
                 </div>
 
                 <div class="mb-4">

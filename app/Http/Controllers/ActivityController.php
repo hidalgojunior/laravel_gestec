@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
+use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,8 +28,9 @@ class ActivityController extends Controller
      */
     public function create()
     {
-        $instructors = User::where('role', 'ministrador')->get();
-        return view('activities.create', compact('instructors'));
+        $instructors = User::whereIn('role', ['ministrador', 'palestrante'])->get();
+        $events = Event::all();
+        return view('activities.create', compact('instructors', 'events'));
     }
 
     /**
@@ -40,6 +42,7 @@ class ActivityController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'instructor_id' => 'required|exists:users,id',
+            'event_id' => 'nullable|exists:events,id',
             'start_time' => 'required|date',
             'end_time' => 'required|date|after:start_time',
             'workload_hours' => 'required|integer|min:1',
@@ -76,8 +79,9 @@ class ActivityController extends Controller
      */
     public function edit(Activity $activity)
     {
-        $instructors = User::where('role', 'ministrador')->get();
-        return view('activities.edit', compact('activity', 'instructors'));
+        $instructors = User::whereIn('role', ['ministrador', 'palestrante'])->get();
+        $events = Event::all();
+        return view('activities.edit', compact('activity', 'instructors', 'events'));
     }
 
     /**
@@ -89,6 +93,7 @@ class ActivityController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'instructor_id' => 'required|exists:users,id',
+            'event_id' => 'nullable|exists:events,id',
             'start_time' => 'required|date',
             'end_time' => 'required|date|after:start_time',
             'workload_hours' => 'required|integer|min:1',

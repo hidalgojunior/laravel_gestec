@@ -1,14 +1,14 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Editar ') . ucfirst($user->role) . ': ' . $user->full_name }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
+@section('content')
+<div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-900">Editar {{ ucfirst($user->role) }}: {{ $user->full_name }}</h2>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="p-6">
 
                     <form method="POST" action="{{ route('admin.users.update', $user) }}" enctype="multipart/form-data">
                         @csrf
@@ -50,7 +50,7 @@
                         <div class="mb-4">
                             <x-input-label for="whatsapp" :value="__('WhatsApp')" />
                             <x-text-input id="whatsapp" class="block mt-1 w-full" type="text" name="whatsapp"
-                                        :value="old('whatsapp', $user->whatsapp)" />
+                                        :value="old('whatsapp', $user->whatsapp)" {{ $user->role === 'ministrador' || $user->role === 'palestrante' ? 'required' : '' }} />
                             <x-input-error :messages="$errors->get('whatsapp')" class="mt-2" />
                         </div>
 
@@ -135,4 +135,5 @@
             }
         });
     </script>
-</x-app-layout>
+</div>
+@endsection

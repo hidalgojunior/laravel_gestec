@@ -22,6 +22,18 @@ class AdminController extends Controller
             'project_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'theme' => 'required|in:light,dark',
+            'homepage_title' => 'required|string|max:255',
+            'homepage_subtitle' => 'nullable|string|max:255',
+            'homepage_description' => 'nullable|string',
+            'homepage_features' => 'nullable|array',
+            'homepage_features.*' => 'string|max:255',
+            'homepage_cta_text' => 'required|string|max:255',
+            'homepage_cta_link' => 'required|string|max:255',
+            'certificate_director_signature' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'certificate_coordinator_signature' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'certificate_text_template' => 'nullable|string',
+            'validation_base_url' => 'nullable|url',
         ]);
 
         $settings = GlobalSetting::getSettings();
@@ -29,6 +41,15 @@ class AdminController extends Controller
         $data = [
             'project_name' => $request->project_name,
             'description' => $request->description,
+            'theme' => $request->theme,
+            'homepage_title' => $request->homepage_title,
+            'homepage_subtitle' => $request->homepage_subtitle,
+            'homepage_description' => $request->homepage_description,
+            'homepage_features' => array_filter(explode("\n", $request->homepage_features_text ?? '')),
+            'homepage_cta_text' => $request->homepage_cta_text,
+            'homepage_cta_link' => $request->homepage_cta_link,
+            'certificate_text_template' => $request->certificate_text_template,
+            'validation_base_url' => $request->validation_base_url,
         ];
 
         if ($request->hasFile('logo')) {
@@ -36,35 +57,19 @@ class AdminController extends Controller
             $data['logo_path'] = $logoPath;
         }
 
+        if ($request->hasFile('certificate_director_signature')) {
+            $directorSignaturePath = $request->file('certificate_director_signature')->store('signatures', 'public');
+            $data['certificate_director_signature'] = $directorSignaturePath;
+        }
+
+        if ($request->hasFile('certificate_coordinator_signature')) {
+            $coordinatorSignaturePath = $request->file('certificate_coordinator_signature')->store('signatures', 'public');
+            $data['certificate_coordinator_signature'] = $coordinatorSignaturePath;
+        }
+
         $settings->update($data);
 
         return redirect()->back()->with('success', 'Configurações atualizadas com sucesso!');
-    }
-
-    public function maintenance()
-    {
-        $settings = GlobalSetting::getSettings();
-        return view('admin.maintenance', compact('settings'));
-    }
-
-    public function toggleMaintenance(Request $request)
-    {
-        $request->validate([
-            'maintenance_mode' => 'required|boolean',
-            'maintenance_message' => 'nullable|string|max:500',
-        ]);
-
-        $settings = GlobalSetting::getSettings();
-
-        if ($request->maintenance_mode) {
-            $settings->enableMaintenanceMode($request->maintenance_message);
-            $message = 'Modo de manutenção ativado com sucesso!';
-        } else {
-            $settings->disableMaintenanceMode();
-            $message = 'Modo de manutenção desativado com sucesso!';
-        }
-
-        return redirect()->back()->with('success', $message);
     }
 
     public function backupDatabase()

@@ -33,7 +33,8 @@ class EventController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'event_date' => 'required|date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
             'location' => 'nullable|string|max:255',
             'capacity' => 'nullable|integer|min:1',
             'price' => 'nullable|numeric|min:0',
@@ -70,7 +71,8 @@ class EventController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'event_date' => 'required|date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
             'location' => 'nullable|string|max:255',
             'capacity' => 'nullable|integer|min:1',
             'price' => 'nullable|numeric|min:0',

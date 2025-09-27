@@ -14,8 +14,21 @@ class GlobalSetting extends Model
         'certificate_coordinator_signature',
         'certificate_text_template',
         'validation_base_url',
-        'maintenance_mode',
-        'maintenance_message',
+        'event_registration_start',
+        'event_registration_end',
+        'theme',
+        'homepage_title',
+        'homepage_subtitle',
+        'homepage_description',
+        'homepage_features',
+        'homepage_cta_text',
+        'homepage_cta_link',
+    ];
+
+    protected $casts = [
+        'event_registration_start' => 'datetime',
+        'event_registration_end' => 'datetime',
+        'homepage_features' => 'array',
     ];
 
     public static function getSettings()
@@ -23,36 +36,18 @@ class GlobalSetting extends Model
         return self::first() ?? self::create([
             'project_name' => 'GESTEC',
             'description' => 'Sistema de Gerenciamento de Eventos Técnicos de Gestão e Desenvolvimento de Sistemas',
-        ]);
-    }
-
-    /**
-     * Verificar se o sistema está em modo de manutenção
-     */
-    public function isMaintenanceMode(): bool
-    {
-        return $this->maintenance_mode ?? false;
-    }
-
-    /**
-     * Ativar modo de manutenção
-     */
-    public function enableMaintenanceMode(string $message = null): void
-    {
-        $this->update([
-            'maintenance_mode' => true,
-            'maintenance_message' => $message,
-        ]);
-    }
-
-    /**
-     * Desativar modo de manutenção
-     */
-    public function disableMaintenanceMode(): void
-    {
-        $this->update([
-            'maintenance_mode' => false,
-            'maintenance_message' => null,
+            'theme' => 'light',
+            'homepage_title' => 'Bem-vindo ao GESTEC',
+            'homepage_subtitle' => 'Sistema de Gerenciamento de Eventos Técnicos',
+            'homepage_description' => 'Gerencie seus eventos, atividades e participantes de forma eficiente.',
+            'homepage_features' => [
+                'Gestão completa de eventos',
+                'Sistema de inscrições automatizado',
+                'Geração de certificados',
+                'Relatórios detalhados'
+            ],
+            'homepage_cta_text' => 'Começar Agora',
+            'homepage_cta_link' => '/dashboard',
         ]);
     }
 }

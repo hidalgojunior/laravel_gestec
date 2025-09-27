@@ -66,6 +66,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Accessor to ensure email is always a string
+     */
+    public function getEmailAttribute($value)
+    {
+        return is_array($value) ? (isset($value[0]) ? $value[0] : '') : $value;
+    }
+
+    /**
+     * Accessor to ensure name is always a string
+     */
+    public function getNameAttribute($value)
+    {
+        return is_array($value) ? (isset($value[0]) ? $value[0] : '') : $value;
+    }
+
+    /**
      * Verificar se o usuário tem um papel específico
      */
     public function hasRole(string $role): bool
@@ -95,6 +111,14 @@ class User extends Authenticatable
     public function isMinistrador(): bool
     {
         return $this->hasRole('ministrador');
+    }
+
+    /**
+     * Verificar se o usuário é palestrante
+     */
+    public function isPalestrante(): bool
+    {
+        return $this->hasRole('palestrante');
     }
 
     /**

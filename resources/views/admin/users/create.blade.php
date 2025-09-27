@@ -1,14 +1,14 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Cadastrar ') . ucfirst($role) }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6 lg:p-8 bg-white border-b border-gray-200">
+@section('content')
+<div class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-900">Cadastrar {{ ucfirst($role) }}</h2>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="p-6">
 
                     <form method="POST" action="{{ route('admin.users.store') }}" enctype="multipart/form-data">
                         @csrf
@@ -48,8 +48,8 @@
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
-                        <!-- WhatsApp (obrigatório para ministrador) -->
-                        @if($role === 'ministrador')
+                        <!-- WhatsApp (obrigatório para ministrador e palestrante) -->
+                        @if($role === 'ministrador' || $role === 'palestrante')
                         <div class="mb-4">
                             <x-input-label for="whatsapp" :value="__('WhatsApp')" />
                             <x-text-input id="whatsapp" class="block mt-1 w-full" type="text" name="whatsapp"
@@ -139,4 +139,5 @@
             }
         });
     </script>
-</x-app-layout>
+</div>
+@endsection

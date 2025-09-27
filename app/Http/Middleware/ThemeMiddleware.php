@@ -5,10 +5,9 @@ namespace App\Http\Middleware;
 use App\Models\GlobalSetting;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckMaintenanceMode
+class ThemeMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,14 +17,10 @@ class CheckMaintenanceMode
     public function handle(Request $request, Closure $next): Response
     {
         $settings = GlobalSetting::getSettings();
+        $theme = $settings->theme ?? 'light';
 
-        // Se estiver em modo de manutenção e o usuário não for admin
-        if ($settings->isMaintenanceMode() && (!Auth::check() || !Auth::user()->isAdmin())) {
-            return response()->view('maintenance', [
-                'message' => $settings->maintenance_message,
-                'settings' => $settings,
-            ], 503); // Service Unavailable
-        }
+        // Compartilhar o tema com todas as views
+        view()->share('currentTheme', $theme);
 
         return $next($request);
     }

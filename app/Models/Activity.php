@@ -12,6 +12,7 @@ class Activity extends Model
         'name',
         'description',
         'instructor_id',
+        'event_id',
         'start_time',
         'end_time',
         'workload_hours',
@@ -36,6 +37,14 @@ class Activity extends Model
     public function instructor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'instructor_id');
+    }
+
+    /**
+     * Relacionamento com o evento (opcional)
+     */
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
     }
 
     /**
