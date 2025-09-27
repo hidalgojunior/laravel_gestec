@@ -191,7 +191,8 @@ return [
     'attributes' => [
         'title' => 'título',
         'description' => 'descrição',
-        'event_date' => 'data do evento',
+        'start_date' => 'data de início',
+        'end_date' => 'data de fim',
         'location' => 'localização',
         'capacity' => 'capacidade',
         'price' => 'preço',

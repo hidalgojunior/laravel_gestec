@@ -57,7 +57,7 @@
                         <option value="">Selecione um evento (ou deixe em branco para atividade independente)</option>
                         @foreach($events as $event)
                             <option value="{{ $event->id }}" {{ old('event_id') == $event->id ? 'selected' : '' }}>
-                                {{ $event->title }} - {{ $event->event_date->format('d/m/Y') }}
+                                {{ $event->title }} - {{ $event->start_date->format('d/m/Y') }}
                             </option>
                         @endforeach
                     </select>
